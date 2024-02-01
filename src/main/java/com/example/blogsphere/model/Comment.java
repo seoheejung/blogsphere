@@ -1,0 +1,110 @@
+package com.example.blogsphere.model;
+
+import jakarta.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "comments")
+public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @org.hibernate.annotations.Comment("댓글 ID")
+    private Long id;
+
+    @Column(nullable = false)
+    @org.hibernate.annotations.Comment("글 ID")
+    private Long postId;
+
+    @Column(length = 100)
+    @org.hibernate.annotations.Comment("작성자")
+    private String author;
+
+    @Column
+    @org.hibernate.annotations.Comment("부모 댓글 ID")
+    private Long parentId;
+
+    @Column(nullable = false)
+    @org.hibernate.annotations.Comment("댓글 내용")
+    private String content;
+
+    @Column
+    @org.hibernate.annotations.Comment("비밀 댓글 여부")
+    private Boolean isSecret;
+
+    @Column
+    @org.hibernate.annotations.Comment("승인 여부")
+    private Boolean isApproved;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    @org.hibernate.annotations.Comment("댓글 작성시간")
+    private Date createdAt;
+
+    // getters, setters
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getPostId() {
+        return this.postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public Long getParentId() {
+        return this.parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getContent() {
+        return this.content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Boolean getIsSecret() {
+        return this.isSecret;
+    }
+
+    public void setIsSecret(Boolean isSecret) {
+        this.isSecret = isSecret;
+    }
+
+    public Boolean getIsApproved() {
+        return this.isApproved;
+    }
+
+    public void setIsApproved(Boolean isApproved) {
+        this.isApproved = isApproved;
+    }
+
+    public Date getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+}
+
+

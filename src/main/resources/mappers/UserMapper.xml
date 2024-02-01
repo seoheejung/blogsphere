@@ -1,0 +1,5 @@
+<mapper namespace="com.example.blogsphere.mapper.UserMapper">
+    <select id="findByUsernameAndPassword" resultType="User">
+        SELECT * FROM users WHERE username = #{username} AND password = #{password}
+    </select>
+</mapper>
