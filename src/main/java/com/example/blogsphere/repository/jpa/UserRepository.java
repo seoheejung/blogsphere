@@ -2,11 +2,12 @@ package com.example.blogsphere.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.blogsphere.model.User;
-
 import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+    // JpaRepository의 기본 메소드들(save, findById, findAll, deleteById 등)을 자동으로 사용
+
     // 이메일을 기준으로 사용자 찾기
     Optional<User> findByEmail(String email);
 
@@ -24,5 +25,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 특정 역할을 가진 사용자 목록 검색
     List<User> findByRole(String role);
-
 }

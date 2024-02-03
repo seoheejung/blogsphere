@@ -159,7 +159,11 @@ src/main/resources
    - getters, setters, constructors: JPA 엔티티의 필드에 대한 접근 메서드와 생성자
 
 ### 2. JPA의 Repository interface와 MyBatis의 Mapper interface 정의
-1. 단위 테스트 작성: JPA 리포지토리를 위한 단위 테스트를 작성하여 CRUD 작업이 올바르게 작동하는지 확인
-2. MyBatis 매퍼 테스트: MyBatis 매퍼 XML 파일들이 제대로 작동하는지 테스트
-
+1. JpaRepository 인터페이스 활용 (Create, Update, Delete)
+2. MyBatis Mapper 인터페이스 활용 (Read)
+```
+* AOP @Transactional  : 선언적 방식의 트랜잭션 관리
+		- commit : 변경 사항을 실제 DB에 저장
+		- rollback : 변경 사항을 취소, 원상태로 복귀
+```
 ### 3. 비즈니스 로직 및 서비스 계층 구현
