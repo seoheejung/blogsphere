@@ -167,3 +167,23 @@ src/main/resources
 		- rollback : 변경 사항을 취소, 원상태로 복귀
 ```
 ### 3. 비즈니스 로직 및 서비스 계층 구현
+1. JpaRepository 인터페이스에 정의된 메소드를 사용하여 비즈니스 로직을 구현
+2. MyBatis Mapper 인터페이스에 정의된 메소드를 사용하여 비즈니스 로직을 구현
+
+### 4. REST 컨트롤러 구현 
+1. @RestController 어노테이션을 사용하여 REST API를 구현
+2. 각 메소드는 UserService의 메소드를 호출하여 필요한 작업을 수행
+```
+@GetMapping : HTTP GET 요청을 처리하는 메소드에 사용하는 어노테이션
+@PostMapping : HTTP POST 요청을 처리하는 메소드에 사용하는 어노테이션
+@DeleteMapping : HTTP DELETE 요청을 처리하는 메소드에 사용하는 어노테이션
+@PathVariable : URL 경로의 일부가 메소드의 매개변수로 전달되어야 할 때 사용
+@RequestBody : 클라이언트가 보내는 데이터를 HTTP 요청의 본문(Body)에서 추출하여 자바 객체로 변환하는 데 사용
+```
+#### ResponseEntity
+ - HTTP 상태 코드, 응답 헤더, 응답 본문 등을 포함하는 완전한 HTTP 응답을 구성
+ - 데이터와 함께 200 OK 응답 보내기 : ResponseEntity.ok(user);
+ - 본문이 없는 HTTP 상태 코드 200 (OK) 응답 : ResponseEntity.ok().build();
+ - 404 Not Found 응답 보내기 : ResponseEntity.notFound().build();
+ - 헤더 정보 추가 : ResponseEntity.ok().headers(headers);
+ - 조건부 응답 (값이 존재하면 map, 존재하지 않으면 orElse): userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
