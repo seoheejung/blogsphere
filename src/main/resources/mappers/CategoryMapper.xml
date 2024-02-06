@@ -1,0 +1,27 @@
+<mapper namespace="com.example.blogsphere.mapper.CategoryMapper">
+    <select id="getCategoryStatisticsByUserId" resultType="map">
+        SELECT c.id, c.name, COUNT(p.id) AS postCount, COUNT(cm.id) AS commentCount
+        FROM categories c
+        LEFT JOIN posts p ON p.category_id = c.id
+        LEFT JOIN comments cm ON cm.post_id = p.id
+        WHERE c.user_id = #{userId}
+        GROUP BY c.id
+    </select>
+
+    <select id="searchCategoriesByKeyword" resultType="Category">
+        SELECT * FROM categories
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <select id="getHierarchicalCategoriesByUserId" resultType="map">
+        SELECT 
+            c1.id AS categoryId,
+            c1.name AS categoryName,
+            c2.id AS parentCategoryId,
+            c2.name AS parentCategoryName
+        FROM categories c1
+        LEFT JOIN categories c2 ON c1.parent_id = c2.id
+        WHERE c1.user_id = #{userId}
+        ORDER BY c2.id, c1.id
+    </select>
+</mapper>

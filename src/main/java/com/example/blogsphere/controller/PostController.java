@@ -59,8 +59,9 @@ public class PostController {
 
     // 글 상세 정보 조회
     @GetMapping("/details/{postId}")
-    public ResponseEntity<Post> getPostDetail(@PathVariable Long postId) {
-        return ResponseEntity.ok(postService.findPostDetailById(postId));
+    public ResponseEntity<Post> findPostDetailById(@PathVariable Long postId) {
+        Post post = postService.findPostDetailById(postId);
+        return post != null ? ResponseEntity.ok(post) : ResponseEntity.notFound().build();
     }
 
     // 사용자 ID로 글 조회
