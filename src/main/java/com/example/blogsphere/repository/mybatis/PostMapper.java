@@ -9,7 +9,6 @@ import com.example.blogsphere.model.Post;
 
 @Mapper
 public interface PostMapper {
-
     // 페이징 처리를 위한 글 목록 조회
     List<Post> findPostsByPage(@Param("offset") int offset, @Param("limit") int limit);
 
