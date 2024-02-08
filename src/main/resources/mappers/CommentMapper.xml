@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.blogsphere.mapper.CommentMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsphere.repository.mybatis.CommentMapper">
 
     <!-- 특정 게시물 또는 블로그에 대한 최신 댓글을 조회 -->
     <select id="findLatestCommentsByPostId" resultType="Comment">

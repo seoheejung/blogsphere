@@ -1,0 +1,26 @@
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- Settings -->
+    <settings>
+        <!-- 설정에서 각 매퍼에 설정된 캐시를 전역적으로 사용하지 않음 -->
+        <setting name="cacheEnabled" value="false"/>
+        
+        <!-- NULL 값에 대한 JDBC 처리 유형 지정 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+
+        <!-- null 값에 대해 setter 메소드 호출 -->
+        <setting name="callSettersOnNulls" value="true"/>
+    </settings>
+
+    <!-- Type Aliases -->
+    <typeAliases>
+        <typeAlias alias="Post" type="com.example.blogsphere.model.Post"/>
+        <typeAlias alias="Blog" type="com.example.blogsphere.model.Blog"/>
+        <typeAlias alias="Category" type="com.example.blogsphere.model.Category"/>
+        <typeAlias alias="Comment" type="com.example.blogsphere.model.Comment"/>
+        <typeAlias alias="User" type="com.example.blogsphere.model.User"/>
+    </typeAliases>
+
+</configuration>

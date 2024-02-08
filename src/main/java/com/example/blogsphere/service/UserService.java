@@ -67,18 +67,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findByIsActive(Boolean isActive) {
-        return userRepository.findByIsActive(isActive);
-    }
-
-    @Transactional(readOnly = true)
     public List<User> findByUsernameContaining(String name) {
         return userRepository.findByUsernameContaining(name);
-    }
-
-    @Transactional(readOnly = true)
-    public List<User> findByRole(String role) {
-        return userRepository.findByRole(role);
     }
 
     // MyBatis를 사용한 로그인 기능

@@ -53,8 +53,8 @@ public class PostService {
 
     // JPA를 사용한 글 조회
     @Transactional(readOnly = true)
-    public List<Post> findByUserIdContaining(Long userId) {
-        return postRepository.findByUserId(userId);
+    public List<Post> findByBlogId(Long blogId) {
+        return postRepository.findByBlogId(blogId);
     }
 
     @Transactional(readOnly = true)

@@ -65,9 +65,9 @@ public class PostController {
     }
 
     // 사용자 ID로 글 조회
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Post>> findByUserId(@PathVariable Long userId) {
-        List<Post> posts = postService.findByUserIdContaining(userId);
+    @GetMapping("/blog/{blogId}")
+    public ResponseEntity<List<Post>> findByBlogId(@PathVariable Long blogId) {
+        List<Post> posts = postService.findByBlogId(blogId);
         return ResponseEntity.ok(posts);
     }
 

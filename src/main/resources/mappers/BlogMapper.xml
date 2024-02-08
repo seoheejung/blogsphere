@@ -1,6 +1,7 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.blogsphere.mapper.BlogMapper">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsphere.repository.mybatis.BlogMapper">
     <!-- 총 게시물 수, 총 댓글 수 등 블로그 통계 조회 -->
     <select id="getBlogStatistics" resultType="map">
         SELECT 

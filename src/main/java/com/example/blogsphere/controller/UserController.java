@@ -41,6 +41,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
+        System.out.println("getAllUsers");
         return ResponseEntity.ok(users);
     }
 
@@ -78,25 +79,10 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 활성화된 사용자 목록 조회
-    @GetMapping("/active")
-    public ResponseEntity<List<User>> getActiveUsers() {
-        List<User> users = userService.findByIsActive(true);
-        return ResponseEntity.ok(users);
-    }
-    
     // 특정 이름을 포함하는 사용자 검색
     @GetMapping("/search/{name}")
     public ResponseEntity<List<User>> searchUsersByName(@PathVariable String name) {
         List<User> users = userService.findByUsernameContaining(name);
         return ResponseEntity.ok(users);
     }
-
-    // 특정 역할을 가진 사용자 목록 조회
-    @GetMapping("/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
-        List<User> users = userService.findByRole(role);
-        return ResponseEntity.ok(users);
-    }
-
 }

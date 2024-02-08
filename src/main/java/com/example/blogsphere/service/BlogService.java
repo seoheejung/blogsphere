@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.blogsphere.model.Blog;
@@ -13,6 +14,7 @@ import com.example.blogsphere.repository.mybatis.BlogMapper;
 
 import jakarta.validation.constraints.NotNull;
 
+@Service
 public class BlogService {
     private final BlogRepository blogRepository;
     private final BlogMapper blogMapper;

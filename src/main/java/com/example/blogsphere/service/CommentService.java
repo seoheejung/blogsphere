@@ -3,6 +3,7 @@ package com.example.blogsphere.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.blogsphere.model.Comment;
@@ -11,6 +12,7 @@ import com.example.blogsphere.repository.mybatis.CommentMapper;
 
 import jakarta.validation.constraints.NotNull;
 
+@Service
 public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;

@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.blogsphere.model.Category;
@@ -12,6 +13,7 @@ import com.example.blogsphere.repository.mybatis.CategoryMapper;
 
 import jakarta.validation.constraints.NotNull;
 
+@Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
