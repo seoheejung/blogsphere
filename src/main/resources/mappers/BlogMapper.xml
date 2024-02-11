@@ -8,21 +8,21 @@
             COUNT(*) AS postCount, 
             SUM(commentCount) AS totalComments 
         FROM posts 
-        WHERE blogId = #{blogId}
+        WHERE blog_id = #{blogId}
     </select>
 
     <!-- 특정 단어를 포함한 블로그 게시물 조회 -->
     <select id="searchPostsByKeyword" resultType="Post">
         SELECT * 
         FROM posts 
-        WHERE blogId = #{blogId} AND content LIKE CONCAT('%', #{keyword}, '%')
+        WHERE blog_id = #{blogId} AND content LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
     <!-- 특정 카테고리 또는 태그를 가진 게시물 검색 -->
     <select id="findPostsByCategoryOrTag" resultType="Post">
         SELECT * 
         FROM posts 
-        WHERE blogId = #{blogId} 
-            AND (categoryId = #{categoryId} OR tag LIKE CONCAT('%', #{tag}, '%'))
+        WHERE blog_id = #{blogId} 
+            AND (category_id = #{categoryId} OR tag LIKE CONCAT('%', #{tag}, '%'))
     </select>
 </mapper>

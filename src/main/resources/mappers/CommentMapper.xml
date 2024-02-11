@@ -21,7 +21,7 @@
     <!-- 특정 사용자가 작성한 댓글들을 조회 -->
     <select id="findCommentsByUserId" resultType="Comment">
         SELECT * FROM comments
-        WHERE author_id = #{userId}
+        WHERE author = #{userId}
     </select>
 
     <!-- 댓글 내용에 특정 키워드가 포함된 댓글을 찾는 기능 -->

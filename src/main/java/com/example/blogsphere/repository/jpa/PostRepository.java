@@ -6,8 +6,8 @@ import com.example.blogsphere.model.Post;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    // 블로그 ID로 게시물 찾기
-    List<Post> findByBlogId(Long blogId);
+    // 사용자 ID로 게시물 찾기
+    List<Post> findByUserId(Long userId);
 
     // 특정 카테고리의 게시물 찾기
     List<Post> findByCategoryId(Long categoryId);

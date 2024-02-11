@@ -53,8 +53,8 @@ public class PostService {
 
     // JPA를 사용한 글 조회
     @Transactional(readOnly = true)
-    public List<Post> findByBlogId(Long blogId) {
-        return postRepository.findByBlogId(blogId);
+    public List<Post> findByUserId(Long userId) {
+        return postRepository.findByUserId(userId);
     }
 
     @Transactional(readOnly = true)
@@ -69,8 +69,8 @@ public class PostService {
 
     // MyBatis를 사용한 글 조회 기능
     @Transactional(readOnly = true)
-    public List<Post> findPostsByPage(int offset, int limit) {
-        return postMapper.findPostsByPage(offset, limit);
+    public List<Post> findPostsByPage(Long blogId, int offset, int limit) {
+        return postMapper.findPostsByPage(blogId, offset, limit);
     }
 
     @Transactional(readOnly = true)

@@ -1,7 +1,7 @@
 package com.example.blogsphere.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -16,7 +16,7 @@ public class Comment {
     @org.hibernate.annotations.Comment("글 ID")
     private Long postId;
 
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     @org.hibernate.annotations.Comment("작성자")
     private String author;
 
@@ -33,13 +33,18 @@ public class Comment {
     private Boolean isSecret;
 
     @Column
-    @org.hibernate.annotations.Comment("승인 여부")
-    private Boolean isApproved;
+    @org.hibernate.annotations.Comment("비밀 댓글 비밀번호")
+    private String password;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     @org.hibernate.annotations.Comment("댓글 작성시간")
-    private Date createdAt;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     // getters, setters
     public Long getId() {
@@ -90,19 +95,19 @@ public class Comment {
         this.isSecret = isSecret;
     }
 
-    public Boolean getIsApproved() {
-        return this.isApproved;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setIsApproved(Boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.blogsphere.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "categories")
@@ -19,13 +20,31 @@ public class Category {
     @org.hibernate.annotations.Comment("부모 카테고리 ID")
     private Long parentId;
 
-    @Column
+    @Column(nullable = false)
     @org.hibernate.annotations.Comment("사용자 ID")
     private Long userId;
 
-    @Column
+    @Column(nullable = false)
     @org.hibernate.annotations.Comment("블로그 ID")
     private Long blogId;
+
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @org.hibernate.annotations.Comment("생성시간")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @org.hibernate.annotations.Comment("수정시간")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     // getters, setters
     public Long getId() {
@@ -68,6 +87,21 @@ public class Category {
         this.blogId = blogId;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
 }
 

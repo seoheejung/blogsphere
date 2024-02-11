@@ -31,8 +31,7 @@
 com.example.blogsphere
 ├── config                 # 보안 설정, 데이터베이스 설정 등의 구성 관련
 │   ├── SecurityConfig.java
-│   ├── CorsConfig.java
-│   └── DatabaseConfig.java
+│   └── CorsConfig.java
 ├── controller             # HTTP 요청을 처리하고 응답을 반환하는 컨트롤러
 │   ├── AuthController.java
 │   ├── BlogController.java
@@ -59,7 +58,7 @@ com.example.blogsphere
 │   │   ├── CommentRepository.java
 │   │   └── CategoryRepository.java
 │   └── mybatis
-│       ├── UserMapper.java
+│       ├── AuthMapper.java
 │       ├── BlogMapper.java
 │       ├── PostMapper.java
 │       ├── CommentMapper.java
@@ -157,7 +156,8 @@ src/main/resources
    - @Id 및 @GeneratedValue(strategy = GenerationType.IDENTITY): id 필드가 테이블의 기본 키임을 나타내며, 자동으로 생성되는 값임을 지정
    - @Column: 데이터베이스 테이블의 각 컬럼에 매핑. nullable, length, unique와 같은 속성 정의 가능.
    - getters, setters, constructors: JPA 엔티티의 필드에 대한 접근 메서드와 생성자
-
+   - @PrePersist 및 @PreUpdate 어노테이션을 사용하여 생성 및 업데이트 시점에 자동으로 날짜/시간을 설정
+   
 ### 2. JPA의 Repository interface와 MyBatis의 Mapper interface 정의
 1. JpaRepository 인터페이스 활용 (Create, Update, Delete)
 2. MyBatis Mapper 인터페이스 활용 (Read)
@@ -173,6 +173,7 @@ src/main/resources
 ### 4. REST 컨트롤러 구현 
 1. @RestController 어노테이션을 사용하여 REST API를 구현
 2. 각 메소드는 UserService의 메소드를 호출하여 필요한 작업을 수행
+3. post 요청이 안될 때는 csrf를 설정해야 한다
 ```
 @GetMapping : HTTP GET 요청을 처리하는 메소드에 사용하는 어노테이션
 @PostMapping : HTTP POST 요청을 처리하는 메소드에 사용하는 어노테이션
@@ -187,3 +188,33 @@ src/main/resources
  - 404 Not Found 응답 보내기 : ResponseEntity.notFound().build();
  - 헤더 정보 추가 : ResponseEntity.ok().headers(headers);
  - 조건부 응답 (값이 존재하면 map, 존재하지 않으면 orElse): userService.getUserById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
+### 5. 보안 설정 및 인증 구현
+1. @Configuration, @EnableWebSecurity 어노테이션을 사용하여 스프링 시큐리티 설정
+2. Spring Security 6.1 버전부터 csrf() 메서드를 사용하는 대신 csrf(Customizer) 또는 csrf(Customizer.withDefaults())를 사용하는 것을 권장
+3. Spring Security 6.1 버전부터 httpBasic() 메서드가 더 이상 사용되지 않으며, 대신 httpBasic(Customizer) 또는 httpBasic(Customizer.withDefaults())를 사용하도록 권장
+4. CORS 설정 
+   - corsConfig 클래스에 CorsConfigurationSource를 정의하고, SecurityConfig 클래스에서 CORS를 활성화
+   - Cors 에러 확인 명령어 
+```
+* PowerShell에서 Basic Authentication을 사용한 요청을 보내는 방법
+1. 사용자 이름과 비밀번호 설정
+$springAPIuser = "admin"
+$springAPIpass = "pass"
+
+2. Basic 인증 헤더 값 생성
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $springAPIuser, $springAPIpass)))
+
+\3.# 웹 요청 수행
+Invoke-WebRequest -Uri "http://172.30.1.48:8090/users" -Headers @{"Origin"="http://localhost:3000"; "Authorization"="Basic $base64AuthInfo"} -Method GET
+
+```
+
+5. OAuth 2.0
+   - AuthController : 인증 요청 및 Authentication code 발급 후 Access Token 발급
+6. JWT
+
+### 6. 예외 처리 로직 구현
+1. try-catch문 사용
+2. postMan으로 API 예외 확인
+3. 확인 순서 (User -> Blog -> Category -> Post -> Common)

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsphere.repository.mybatis.AuthMapper">
+    <insert id="insertAuthCode" parameterType="com.example.blogsphere.model.Auth">
+        INSERT INTO auths (code, client_email, expiration_time)
+        VALUES (#{authCode.code}, #{authCode.clientEmail}, #{authCode.expirationTime})
+    </insert>
+    
+    <select id="existsByClientId" resultType="boolean">
+        SELECT COUNT(*) > 0 FROM users WHERE email = #{clientEmail}
+    </select>
+
+    <select id="isValidAuthCode" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM auths
+        WHERE code = #{code}
+        AND client_email = (
+            SELECT email FROM users 
+            WHERE email = #{clientEmail}
+                and password = #{clientPass}
+        )
+        AND expiration_time > NOW()
+    </select>
+</mapper>

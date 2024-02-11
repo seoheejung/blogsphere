@@ -1,6 +1,6 @@
 package com.example.blogsphere.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import com.example.blogsphere.model.enun.Visibility;
 import jakarta.persistence.*;
 
@@ -17,6 +17,10 @@ public class Post {
     @Column
     @org.hibernate.annotations.Comment("블로그 ID")
     private Long blogId;
+
+    @Column(nullable = false)
+    @org.hibernate.annotations.Comment("작성자 ID")
+    private Long userId;
 
     @Column(nullable = false)
     @org.hibernate.annotations.Comment("글 제목")
@@ -36,11 +40,6 @@ public class Post {
     private Long categoryId;
 
     @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Comment("발행시간")
-    private Date published;
-
-    @Column
     @org.hibernate.annotations.Comment("태그")
     private String tag;
 
@@ -51,6 +50,24 @@ public class Post {
     @Column
     @org.hibernate.annotations.Comment("보호글 비밀번호")
     private String password;
+
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @org.hibernate.annotations.Comment("발행시간")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @org.hibernate.annotations.Comment("수정시간")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
     // getters, setters
     public Long getId() {
@@ -68,6 +85,15 @@ public class Post {
     public void setBlogId(Long blogId) {
         this.blogId = blogId;
     }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
 
     public String getTitle() {
         return this.title;
@@ -101,14 +127,6 @@ public class Post {
         this.categoryId = categoryId;
     }
 
-    public Date getPublished() {
-        return this.published;
-    }
-
-    public void setPublished(Date published) {
-        this.published = published;
-    }
-
     public String getTag() {
         return this.tag;
     }
@@ -131,5 +149,21 @@ public class Post {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

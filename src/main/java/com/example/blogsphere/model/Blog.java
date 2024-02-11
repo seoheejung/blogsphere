@@ -1,6 +1,10 @@
 package com.example.blogsphere.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "blogs")
@@ -11,16 +15,19 @@ public class Blog {
     @org.hibernate.annotations.Comment("블로그 ID")
     private Long blogId;
 
-    @Column(nullable = false)
-    @org.hibernate.annotations.Comment("티스토리 기본 URL")
+    @Column(nullable = false, unique = true)
+    @org.hibernate.annotations.Comment("블로그 URL")
+    @NotBlank(message = "url is not Null")
     private String url;
 
-    @Column
+    @Column(nullable = false)
     @org.hibernate.annotations.Comment("사용자 ID")
+    @NotNull(message = "userId is not Null")
     private Long userId;
 
     @Column(nullable = false)
     @org.hibernate.annotations.Comment("블로그 타이틀")
+    @NotBlank(message = "title is not Null")
     private String title;
 
     @Column
@@ -35,13 +42,14 @@ public class Blog {
     @org.hibernate.annotations.Comment("블로그에서의 닉네임")
     private String nickname;
 
-    @Column
-    @org.hibernate.annotations.Comment("블로그 권한")
-    private String role;
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @org.hibernate.annotations.Comment("블로그 생성 시간")
+    private LocalDateTime createdAt;
 
-    @Column
-    @org.hibernate.annotations.Comment("블로그 컨텐츠 개수")
-    private Integer statistics;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     // getters, setters
     public Long getBlogId() {
@@ -100,20 +108,12 @@ public class Blog {
         this.nickname = nickname;
     }
 
-    public String getRole() {
-        return this.role;
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Integer getStatistics() {
-        return this.statistics;
-    }
-
-    public void setStatistics(Integer statistics) {
-        this.statistics = statistics;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 }

@@ -4,7 +4,8 @@
 <mapper namespace="com.example.blogsphere.repository.mybatis.PostMapper">
     <!-- 페이징 처리를 위한 글 목록 조회 -->
     <select id="findPostsByPage" resultType="Post">
-        SELECT * FROM posts LIMIT #{limit} OFFSET #{offset}
+        SELECT * FROM posts WHERE blog_id = #{blogId}
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <!-- 글의 상세 정보 조회 -->

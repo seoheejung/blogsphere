@@ -39,7 +39,7 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Category> getAllCategorys() {
+    public List<Category> getAllCategories() {
         // 모든 카테고리 조회 로직
         return categoryRepository.findAll();
     }

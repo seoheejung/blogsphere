@@ -14,9 +14,10 @@
     <select id="searchCategoriesByKeyword" resultType="Category">
         SELECT * FROM categories
         WHERE name LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY name
     </select>
 
-    <select id="getHierarchicalCategoriesByUserId" resultType="map">
+    <select id="getHierarchicalCategories" resultType="map">
         SELECT 
             c1.id AS categoryId,
             c1.name AS categoryName,
