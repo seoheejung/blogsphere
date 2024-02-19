@@ -13,17 +13,14 @@ import com.example.blogsphere.repository.jpa.BlogRepository;
 import com.example.blogsphere.repository.mybatis.BlogMapper;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class BlogService {
     private final BlogRepository blogRepository;
     private final BlogMapper blogMapper;
 
-    public BlogService(BlogRepository blogRepository, BlogMapper blogMapper) {
-        this.blogRepository = blogRepository;
-        this.blogMapper = blogMapper;
-    }
-    
     // JpaRepository의 기본 메소드들
     @SuppressWarnings("null")
     @Transactional(rollbackFor = {Exception.class})

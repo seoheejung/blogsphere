@@ -14,11 +14,11 @@ public class Post {
     @org.hibernate.annotations.Comment("글 ID")
     private Long id;
 
-    @Column
+    @Column(name = "blog_id")
     @org.hibernate.annotations.Comment("블로그 ID")
     private Long blogId;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     @org.hibernate.annotations.Comment("작성자 ID")
     private Long userId;
 
@@ -46,6 +46,10 @@ public class Post {
     @Column(name = "accept_comment")
     @org.hibernate.annotations.Comment("댓글 허용 여부")
     private Boolean acceptComment;
+
+    @Column(name = "is_secret")
+    @org.hibernate.annotations.Comment("보호글 여부")
+    private Boolean isSecret;
 
     @Column
     @org.hibernate.annotations.Comment("보호글 비밀번호")
@@ -141,6 +145,14 @@ public class Post {
 
     public void setAcceptComment(Boolean acceptComment) {
         this.acceptComment = acceptComment;
+    }
+
+    public Boolean getIsSecret() {
+        return this.isSecret;
+    }
+
+    public void setIsSecret(Boolean isSecret) {
+        this.isSecret = isSecret;
     }
 
     public String getPassword() {

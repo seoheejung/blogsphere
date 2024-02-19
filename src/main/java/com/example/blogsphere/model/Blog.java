@@ -13,14 +13,14 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @org.hibernate.annotations.Comment("블로그 ID")
-    private Long blogId;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     @org.hibernate.annotations.Comment("블로그 URL")
     @NotBlank(message = "url is not Null")
     private String url;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     @org.hibernate.annotations.Comment("사용자 ID")
     @NotNull(message = "userId is not Null")
     private Long userId;
@@ -43,7 +43,7 @@ public class Blog {
     private String nickname;
 
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    @org.hibernate.annotations.Comment("블로그 생성 시간")
+    @org.hibernate.annotations.Comment("블로그 생성시간")
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -52,12 +52,12 @@ public class Blog {
     }
 
     // getters, setters
-    public Long getBlogId() {
-        return this.blogId;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setBlogId(Long blogId) {
-        this.blogId = blogId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUrl() {

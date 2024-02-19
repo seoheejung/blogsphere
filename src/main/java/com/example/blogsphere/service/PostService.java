@@ -7,6 +7,7 @@ import com.example.blogsphere.repository.jpa.PostRepository;
 import com.example.blogsphere.repository.mybatis.PostMapper;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
-
-    public PostService(PostRepository postRepository, PostMapper postMapper) {
-        this.postRepository = postRepository;
-        this.postMapper = postMapper;
-    }
     
     // JpaRepository의 기본 메소드들
     @SuppressWarnings("null")
@@ -77,4 +74,10 @@ public class PostService {
     public Post findPostDetailById(Long postId) {
         return postMapper.findPostDetailById(postId);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<Post> getSecretPostByIdAndPassword(Long id, String password) {
+        return postMapper.getSecretPostByIdAndPassword(id, password);
+    }
+    
 }

@@ -18,17 +18,17 @@ import com.example.blogsphere.model.Comment;
 import com.example.blogsphere.model.ResultMessage;
 import com.example.blogsphere.service.CommentService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/comments")
 public class CommentController {
     private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
     private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
+    private final CommonFunction commonFunction;
 
     // 댓글 생성 및 수정
     @PostMapping

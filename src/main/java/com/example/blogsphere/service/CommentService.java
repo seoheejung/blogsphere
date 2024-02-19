@@ -11,17 +11,14 @@ import com.example.blogsphere.repository.jpa.CommentRepository;
 import com.example.blogsphere.repository.mybatis.CommentMapper;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper) {
-        this.commentRepository = commentRepository;
-        this.commentMapper = commentMapper;
-    }
-    
     // JpaRepository의 기본 메소드들
     @SuppressWarnings("null")
     @Transactional(rollbackFor = {Exception.class})

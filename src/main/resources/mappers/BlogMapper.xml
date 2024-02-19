@@ -5,24 +5,37 @@
     <!-- 총 게시물 수, 총 댓글 수 등 블로그 통계 조회 -->
     <select id="getBlogStatistics" resultType="map">
         SELECT 
-            COUNT(*) AS postCount, 
-            SUM(commentCount) AS totalComments 
-        FROM posts 
-        WHERE blog_id = #{blogId}
+            COUNT(p.id) AS postCount, 
+            COALESCE(SUM(c.commentCount), 0) AS totalComments
+        FROM posts p
+        LEFT JOIN 
+            (SELECT post_id, COUNT(*) AS commentCount 
+            FROM comments GROUP BY post_id) c 
+        ON p.id = c.post_id
+        WHERE p.blog_id = #{blogId};
     </select>
 
     <!-- 특정 단어를 포함한 블로그 게시물 조회 -->
-    <select id="searchPostsByKeyword" resultType="Post">
-        SELECT * 
-        FROM posts 
+    <select id="searchPostsByKeyword" resultType="map">
+        SELECT 
+            p.id, p.blog_id, b.title AS blogTitle, 
+            b.nickname, p.title AS postTitle, p.tag, p.created_at
+        FROM posts p 
+        LEFT JOIN blogs b ON p.blog_id = b.id
         WHERE blog_id = #{blogId} AND content LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
-    <!-- 특정 카테고리 또는 태그를 가진 게시물 검색 -->
-    <select id="findPostsByCategoryOrTag" resultType="Post">
-        SELECT * 
-        FROM posts 
+    <!-- 특정 카테고리 또는 태그를 가진 블로그 게시물 검색 -->
+    <select id="findPostsByCategoryOrTag" resultType="map">
+        SELECT 
+            p.id, p.blog_id, b.title AS blogTitle, 
+            b.nickname, p.title AS postTitle, p.tag, p.created_at,
+            p.category_id, c.name
+        FROM posts p
+        LEFT JOIN blogs b ON p.blog_id = b.id
+        LEFT JOIN categories c ON p.category_id = c.id
         WHERE blog_id = #{blogId} 
             AND (category_id = #{categoryId} OR tag LIKE CONCAT('%', #{tag}, '%'))
+            AND p.visibility = 'PUBLIC'
     </select>
 </mapper>

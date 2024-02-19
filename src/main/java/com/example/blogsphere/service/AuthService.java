@@ -5,19 +5,18 @@ import com.example.blogsphere.repository.mybatis.AuthMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final AuthMapper authMapper;
-
-    public AuthService(AuthMapper authMapper) {
-        this.authMapper = authMapper;
-    }
 
     // 클라이언트 ID 유효성 검증 및 인증 코드 저장
     public boolean createAndStoreAuthCode(String clientEmail, String authCode) {
@@ -37,7 +36,7 @@ public class AuthService {
     }
 
     public String generateAccessToken(String clientEmail, String clientPass, String code) {
-        // 클라이언트 인증 및 인증 코드 검증 로직...
+        // 클라이언트 인증 및 인증 코드 검증 로직
         if (authMapper.isValidAuthCode(code, clientEmail, clientPass)) {
             long currentTimeMillis = System.currentTimeMillis();
             SecretKey signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);

@@ -16,15 +16,15 @@ public class Category {
     @org.hibernate.annotations.Comment("카테고리 이름")
     private String name;
 
-    @Column
+    @Column(name = "parent_id")
     @org.hibernate.annotations.Comment("부모 카테고리 ID")
     private Long parentId;
 
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     @org.hibernate.annotations.Comment("사용자 ID")
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(name = "blog_id", nullable = false)
     @org.hibernate.annotations.Comment("블로그 ID")
     private Long blogId;
 

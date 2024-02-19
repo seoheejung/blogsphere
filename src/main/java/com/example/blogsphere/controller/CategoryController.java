@@ -18,19 +18,19 @@ import com.example.blogsphere.model.Category;
 import com.example.blogsphere.model.ResultMessage;
 import com.example.blogsphere.service.CategoryService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/categories")
 public class CategoryController {
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
     private final CategoryService categoryService;
-
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-
+    private final CommonFunction commonFunction;
+    
     // 카테고리 생성 및 수정
     @PostMapping
     public ResponseEntity<ResultMessage> createCategory(@RequestBody Category category) {

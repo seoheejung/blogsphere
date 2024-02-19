@@ -28,6 +28,10 @@ public class User {
     @NotBlank(message = "password is not Null")
     private String password;
 
+    @Column(nullable = false)
+    @org.hibernate.annotations.Comment("권한")
+    private String role;
+
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @org.hibernate.annotations.Comment("계정 생성 시간")
     private LocalDateTime createdAt;
@@ -80,6 +84,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return this.role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDateTime getCreatedAt() {

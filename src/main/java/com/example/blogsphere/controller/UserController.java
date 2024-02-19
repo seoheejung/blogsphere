@@ -13,28 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Map;
 
 import com.example.blogsphere.CommonFunction;
 import com.example.blogsphere.model.ResultMessage;
 import com.example.blogsphere.model.User;
+import com.example.blogsphere.security.JwtTokenProvider;
 import com.example.blogsphere.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     // 사용자 생성 및 수정
     @PostMapping
     public ResponseEntity<ResultMessage> createUser(@RequestBody User user) {
         logger.info(CommonFunction.getClassName());
         try {
-            User savedUser = userService.saveUser(user);
+            Map<String, Object> savedUser = userService.saveUser(user);
             ResultMessage resultMessage = ResultMessage.builder()
                                                         .code(200)
                                                         .msg("success")
@@ -82,16 +85,28 @@ public class UserController {
 
     // 모든 사용자 조회
     @GetMapping
-    public ResponseEntity<ResultMessage> getAllUsers() {
+    public ResponseEntity<ResultMessage> getAllUsers(HttpServletRequest request) {
         logger.info(CommonFunction.getClassName());
+        String token = request.getHeader("Authorization");
+        
         try {
-            List<User> users = userService.getAllUsers();
-            ResultMessage resultMessage = ResultMessage.builder()
-                                                .code(200)
-                                                .msg("success")
-                                                .result(users)
-                                                .build();
-            return ResponseEntity.ok(resultMessage);
+            if(jwtTokenProvider.checkToken(token)) {
+                List<User> users = userService.getAllUsers();
+                ResultMessage resultMessage = ResultMessage.builder()
+                                                    .code(200)
+                                                    .msg("success")
+                                                    .result(users)
+                                                    .build();
+                return ResponseEntity.ok(resultMessage);
+            } else {
+                // 토큰 검사 실패: 접근 거부 메시지 반환
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ResultMessage.builder()
+                        .code(HttpStatus.FORBIDDEN.value())
+                        .msg("Access denied")
+                        .result("F")
+                        .build());
+            }
         } catch (Exception e) {
             logger.error("getAllUsers Error: {}", e.getMessage());
             ResultMessage resultMessage = ResultMessage.builder()
@@ -110,7 +125,7 @@ public class UserController {
         try {
             userService.deleteUser(id);
             return ResponseEntity.ok(ResultMessage.builder()
-                                                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                                    .code(200)
                                                     .msg("User deleted successfully")
                                                     .result("Success")
                                                     .build());
@@ -130,18 +145,18 @@ public class UserController {
     public ResponseEntity<ResultMessage> login(@RequestParam String username, @RequestParam String password) {
         logger.info(CommonFunction.getClassName());
         try {
-            User user = userService.login(username, password);
-            if (user != null) {
+            Map<String, Object> authInfo = userService.login(username, password);
+            if (authInfo != null && !authInfo.isEmpty()) {
                 return ResponseEntity.ok(ResultMessage.builder()
                                                     .code(200)
                                                     .msg("Login successful")
-                                                    .result(user)
+                                                    .result(authInfo) // 사용자 정보와 토큰 포함
                                                     .build());
             } else {
                 return ResponseEntity.badRequest()
                                     .body(ResultMessage.builder()
                                                         .code(HttpStatus.BAD_REQUEST.value())
-                                                        .msg("Login failed")
+                                                        .msg("Invalid username or password")
                                                         .result("F")
                                                         .build());
             }

@@ -1,6 +1,7 @@
 package com.example.blogsphere.repository.mybatis;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,4 +15,7 @@ public interface PostMapper {
 
     // 글의 상세 정보와 관련 데이터(예: 댓글, 카테고리) 함께 조회
     Post findPostDetailById(@Param("postId") Long postId);
+
+    // 비밀글 조회
+    Optional<Post> getSecretPostByIdAndPassword(@Param("id") Long id, @Param("password") String password);
 }

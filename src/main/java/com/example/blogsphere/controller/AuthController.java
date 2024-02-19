@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.blogsphere.CommonFunction;
 import com.example.blogsphere.service.AuthService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     // 인증 요청 및 Authentication code 발급
     @GetMapping("/authorize")

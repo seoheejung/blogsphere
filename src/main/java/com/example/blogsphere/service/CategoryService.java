@@ -12,17 +12,14 @@ import com.example.blogsphere.repository.jpa.CategoryRepository;
 import com.example.blogsphere.repository.mybatis.CategoryMapper;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
-    
     // JpaRepository의 기본 메소드들
     @SuppressWarnings("null")
     @Transactional(rollbackFor = {Exception.class})

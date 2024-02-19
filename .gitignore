@@ -38,3 +38,5 @@ out/
 
 /src/main/resources/application.properties
 /blogsphereLog
+/src/main/java/com/example/blogsphere/security/JwtAuthenticationFilter_test.java
+/src/main/java/com/example/blogsphere/config/SecurityConfig_test.java

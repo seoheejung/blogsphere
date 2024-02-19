@@ -19,18 +19,18 @@ import com.example.blogsphere.model.Post;
 import com.example.blogsphere.model.ResultMessage;
 import com.example.blogsphere.service.BlogService;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/blog")
 public class BlogController {
     private final BlogService blogService;
     private static final Logger logger = LoggerFactory.getLogger(BlogController.class);
-
-    public BlogController(BlogService blogService) {
-        this.blogService = blogService;
-    }
+    private final CommonFunction commonFunction;
 
     // 블로그 생성 및 수정
     @PostMapping

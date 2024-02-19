@@ -12,7 +12,7 @@ public class Comment {
     @org.hibernate.annotations.Comment("댓글 ID")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "post_id", nullable = false)
     @org.hibernate.annotations.Comment("글 ID")
     private Long postId;
 
@@ -20,7 +20,7 @@ public class Comment {
     @org.hibernate.annotations.Comment("작성자")
     private String author;
 
-    @Column
+    @Column(name = "parent_id", nullable = false)
     @org.hibernate.annotations.Comment("부모 댓글 ID")
     private Long parentId;
 

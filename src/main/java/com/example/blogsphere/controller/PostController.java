@@ -1,6 +1,7 @@
 package com.example.blogsphere.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,16 @@ import com.example.blogsphere.model.Post;
 import com.example.blogsphere.model.ResultMessage;
 import com.example.blogsphere.service.PostService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostController {
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
     private final PostService postService;
+    private final CommonFunction commonFunction;
 
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
-    
     // 글 생성 및 수정
     @PostMapping
     public ResponseEntity<ResultMessage> createOrUpdatePost(@RequestBody Post post) {
@@ -58,20 +59,31 @@ public class PostController {
     public ResponseEntity<ResultMessage> getPostById(@PathVariable Long id) {
         logger.info(CommonFunction.getClassName());
         try {
-            return postService.getPostById(id)
-                    .map(post -> ResponseEntity.ok(ResultMessage.builder()
-                                                                .code(200)
-                                                                .msg("success")
-                                                                .result(post)
-                                                                .build()))
-                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                            .body(ResultMessage.builder()
-                                                                .code(404)
-                                                                .msg("Post not found")
-                                                                .result("F")
-                                                                .build()));
+            Optional<Post> postOptional = postService.getPostById(id);
+            if (postOptional.isPresent()) {
+                Post post = postOptional.get();
+                // 비밀글인 경우
+                if (Boolean.TRUE.equals(post.getIsSecret()) && post.getPassword() != null) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .body(ResultMessage.builder()
+                                    .code(403)
+                                    .msg("This post is secret. Please provide a password to access.")
+                                    .result("F")
+                                    .build());
+                }
+                return ResponseEntity.ok(ResultMessage.builder()
+                                                    .code(200)
+                                                    .msg("success")
+                                                    .result(post)
+                                                    .build());
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(ResultMessage.builder()
+                                                    .code(404)
+                                                    .msg("Post not found")
+                                                    .result("F")
+                                                    .build());
         } catch (Exception e) {
-            logger.error("getPostById Error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                 .body(ResultMessage.builder()
                                                     .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -80,6 +92,37 @@ public class PostController {
                                                     .build());
         }
     }
+    // 비밀글 접근
+    @PostMapping("/access")
+    public ResponseEntity<ResultMessage> accessSecretPost(@RequestParam Long id, @RequestParam String password) {
+        try {
+            // postService에서 비밀글 확인 및 비밀번호 일치 여부 확인
+            Optional<Post> secretPost = postService.getSecretPostByIdAndPassword(id, password);
+    
+            return secretPost
+                    .map(post -> ResponseEntity.ok(ResultMessage.builder()
+                                                            .code(200)
+                                                            .msg("success")
+                                                            .result(post)
+                                                            .build()))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                                .body(ResultMessage.builder()
+                                                                    .code(401)
+                                                                    .msg("Unauthorized access or post not found")
+                                                                    .result("F")
+                                                                    .build()));
+        } catch (Exception e) {
+            logger.error("accessSecretPost Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body(ResultMessage.builder()
+                                                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                                    .msg("Internal server error: " + e.getMessage())
+                                                    .result("F")
+                                                    .build());
+        }
+    }
+    
+
 
     // 모든 글 조회
     @GetMapping

@@ -2,7 +2,11 @@ package com.example.blogsphere;
 
 import java.security.SecureRandom;
 import java.util.Base64;
+import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
+@Component
+@RequiredArgsConstructor
 public class CommonFunction {
      
      // 실행중인 클래스명 추출
